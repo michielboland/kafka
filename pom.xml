@@ -36,6 +36,11 @@
                         </configuration>
                     </execution>
                 </executions>
+                <configuration>
+                    <usedDependencies>
+                        <usedDependency>org.apache.logging.log4j:log4j-slf4j-impl</usedDependency>
+                    </usedDependencies>
+                </configuration>
             </plugin>
         </plugins>
     </build>
@@ -44,6 +49,11 @@
         <dependency>
             <groupId>org.apache.kafka</groupId>
             <artifactId>kafka-streams</artifactId>
+            <version>${kafka.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.kafka</groupId>
+            <artifactId>kafka-clients</artifactId>
             <version>${kafka.version}</version>
         </dependency>
         <dependency>
