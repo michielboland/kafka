@@ -1,4 +1,4 @@
-package org.boland.myapps;
+package org.boland.kafka;
 
 import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.common.serialization.Serdes;

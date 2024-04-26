@@ -1,4 +1,4 @@
-package org.boland.myapps;
+package org.boland.kafka;
 
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.StreamsBuilder;
