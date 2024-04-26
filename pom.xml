@@ -39,7 +39,7 @@
                 </executions>
                 <configuration>
                     <usedDependencies>
-                        <usedDependency>org.apache.logging.log4j:log4j-slf4j-impl</usedDependency>
+                        <usedDependency>org.apache.logging.log4j:log4j-slf4j2-impl</usedDependency>
                     </usedDependencies>
                 </configuration>
             </plugin>
