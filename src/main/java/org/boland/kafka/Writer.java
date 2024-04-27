@@ -5,12 +5,17 @@ import org.apache.kafka.streams.processor.api.Processor;
 import org.apache.kafka.streams.processor.api.ProcessorContext;
 import org.apache.kafka.streams.processor.api.Record;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Base64;
 import java.util.Properties;
 import java.util.Random;
+import java.util.stream.LongStream;
 
 public class Writer {
+
+    private static final Logger LOG = LoggerFactory.getLogger(Writer.class);
 
     public static void main(String[] args) {
         Properties props = Config.builder()
@@ -37,30 +42,29 @@ public class Writer {
 
         @Override
         public void process(@NotNull Record<String, String> record) {
+            String key = record.key();
+            if (key == null) {
+                return;
+            }
             String value = record.value();
             if (value == null) {
                 return;
             }
-            String[] a = value.split(" ");
-            if (a.length != 2) {
-                return;
-            }
-            long keyCount;
             long valueCount;
             try {
-                keyCount = Long.parseLong(a[0]);
-                valueCount = Long.parseLong(a[1]);
+                valueCount = Long.parseLong(value);
             } catch (NumberFormatException e) {
                 return;
             }
-            if (keyCount <= 0 || valueCount <= 0) {
+            if (valueCount <= 0) {
                 return;
             }
-            random.longs(valueCount, 0, keyCount).forEach(k -> context.forward(new Record<>(String.valueOf(k), randomString(), record.timestamp())));
+            LOG.info("sending {} random strings to '{}'", valueCount, key);
+            LongStream.range(0, valueCount).forEach(k -> context.forward(new Record<>(key, randomString(), record.timestamp())));
         }
 
         private String randomString() {
-            byte[] bytes = new byte[15];
+            byte[] bytes = new byte[3];
             random.nextBytes(bytes);
             return encoder.encodeToString(bytes);
         }

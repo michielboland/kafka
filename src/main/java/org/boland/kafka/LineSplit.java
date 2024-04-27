@@ -22,8 +22,8 @@ public class LineSplit {
         final StreamsBuilder builder = new StreamsBuilder();
 
         builder.<String, String>stream("streams-plaintext-input")
-            .flatMapValues(value -> Arrays.asList(value.split("\\W+")))
-            .to("streams-linesplit-output");
+                .flatMapValues(value -> Arrays.asList(value.split("\\W+")))
+                .to("streams-linesplit-output");
 
         new Runner().runStream(builder, props);
     }
