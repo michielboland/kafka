@@ -4,7 +4,6 @@ import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.processor.api.Processor;
 import org.apache.kafka.streams.processor.api.ProcessorContext;
 import org.apache.kafka.streams.processor.api.Record;
-import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,12 +35,12 @@ public class Writer {
         private ProcessorContext<String, String> context;
 
         @Override
-        public void init(@NotNull ProcessorContext<String, String> context) {
+        public void init(ProcessorContext<String, String> context) {
             this.context = context;
         }
 
         @Override
-        public void process(@NotNull Record<String, String> record) {
+        public void process(Record<String, String> record) {
             String key = record.key();
             if (key == null) {
                 return;
