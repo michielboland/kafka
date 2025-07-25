@@ -13,9 +13,6 @@ import org.apache.kafka.streams.state.KeyValueIterator;
 import org.apache.kafka.streams.state.KeyValueStore;
 import org.apache.kafka.streams.state.StoreBuilder;
 import org.apache.kafka.streams.state.Stores;
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Unmodifiable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,15 +44,13 @@ public class States {
             this.storeBuilder = storeBuilder;
         }
 
-        @Contract(" -> new")
         @Override
-        public @NotNull Processor<String, String, String, String> get() {
+        public Processor<String, String, String, String> get() {
             return new StateProcessor();
         }
 
-        @Contract(value = " -> new", pure = true)
         @Override
-        public @NotNull @Unmodifiable Set<StoreBuilder<?>> stores() {
+        public Set<StoreBuilder<?>> stores() {
             return Collections.singleton(storeBuilder);
         }
     }
@@ -64,13 +59,13 @@ public class States {
         private KeyValueStore<String, Long> store;
 
         @Override
-        public void init(@NotNull ProcessorContext<String, String> context) {
+        public void init(ProcessorContext<String, String> context) {
             store = context.getStateStore("test-store");
             context.schedule(Duration.ofSeconds(1), PunctuationType.WALL_CLOCK_TIME, this);
         }
 
         @Override
-        public void process(@NotNull Record<String, String> record) {
+        public void process(Record<String, String> record) {
             String key = record.key();
             if (key == null) {
                 return;

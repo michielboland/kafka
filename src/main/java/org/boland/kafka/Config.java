@@ -3,16 +3,12 @@ package org.boland.kafka;
 import org.apache.kafka.common.serialization.Serde;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.StreamsConfig;
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 import java.util.Properties;
 
 class Config {
 
-    @NotNull
-    @Contract(value = " -> new", pure = true)
     static Builder builder() {
         return new Builder();
     }

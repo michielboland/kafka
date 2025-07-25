@@ -3,7 +3,6 @@ package org.boland.kafka;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.Topology;
-import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,7 +16,7 @@ class Runner {
     private static final Logger LOG = LoggerFactory.getLogger(Runner.class);
     private boolean close = true;
 
-    void runStream(@NotNull StreamsBuilder builder, Properties props) {
+    void runStream(StreamsBuilder builder, Properties props) {
         final Topology topology = builder.build();
         int status;
         try (KafkaStreams streams = new KafkaStreams(topology, props)) {
@@ -27,7 +26,7 @@ class Runner {
         System.exit(status);
     }
 
-    private int runStreams(@NotNull KafkaStreams streams) {
+    private int runStreams(KafkaStreams streams) {
         final CountDownLatch latch = new CountDownLatch(1);
 
         // attach shutdown handler to catch control-c
