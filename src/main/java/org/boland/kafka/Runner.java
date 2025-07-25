@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import java.util.Properties;
 import java.util.concurrent.CountDownLatch;
 
-import static org.apache.kafka.streams.errors.StreamsUncaughtExceptionHandler.StreamThreadExceptionResponse.SHUTDOWN_CLIENT;
+import static org.apache.kafka.streams.errors.StreamsUncaughtExceptionHandler.StreamThreadExceptionResponse.SHUTDOWN_APPLICATION;
 
 class Runner {
 
@@ -43,8 +43,9 @@ class Runner {
 
         Thread runnerThread = Thread.currentThread();
         streams.setUncaughtExceptionHandler(e -> {
+            LOG.warn("Sending shutdown request following uncaught exception");
             runnerThread.interrupt();
-            return SHUTDOWN_CLIENT;
+            return SHUTDOWN_APPLICATION;
         });
         streams.start();
         try {
