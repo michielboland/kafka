@@ -22,7 +22,7 @@ public class CreateTopics {
     public static void main(String[] args) throws Exception {
         Properties props = Config.builder().defaultBootstrapServer().applicationId("create-topic").build();
         try (var adminClient = Admin.create(props)) {
-            adminClient.createTopics(Arrays.stream(TOPICS).map(n -> new NewTopic(n, 2, (short) 3)).collect(Collectors.toList())).all().get();
+            adminClient.createTopics(Arrays.stream(TOPICS).map(n -> new NewTopic(n, 2, (short) 1)).collect(Collectors.toList())).all().get();
         } catch (ExecutionException e) {
             if (!(e.getCause() instanceof TopicExistsException)) {
                 throw new RuntimeException(e);
