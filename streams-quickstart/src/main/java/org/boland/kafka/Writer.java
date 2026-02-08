@@ -10,6 +10,8 @@ import org.slf4j.LoggerFactory;
 import java.util.Base64;
 import java.util.Properties;
 import java.util.Random;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 
 public class Writer {
@@ -41,26 +43,22 @@ public class Writer {
 
         @Override
         public void process(Record<String, String> record) {
-            String key = record.key();
-            if (key == null) {
-                return;
-            }
-            String value = record.value();
-            if (value == null) {
-                return;
-            }
-            long valueCount = Long.parseLong(value);
+            long valueCount = Long.parseLong(record.value());
             if (valueCount <= 0) {
                 return;
             }
-            LOG.info("sending {} random strings to '{}'", valueCount, key);
-            LongStream.range(0, valueCount).forEach(k -> context.forward(new Record<>(key, randomString(), record.timestamp())));
+            LOG.info("sending {} random strings", valueCount);
+            LongStream.range(0, valueCount).forEach(k -> context.forward(new Record<>(randomWord(), randomString(), record.timestamp())));
         }
 
-        private String randomString() {
+        private String randomWord() {
             byte[] bytes = new byte[3];
             random.nextBytes(bytes);
             return encoder.encodeToString(bytes);
+        }
+
+        private String randomString() {
+            return IntStream.range(0, random.nextInt(16)).mapToObj(i -> randomWord()).collect(Collectors.joining(" "));
         }
     }
 }
