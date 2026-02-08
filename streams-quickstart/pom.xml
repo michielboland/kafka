@@ -11,7 +11,7 @@
     <properties>
         <kafka.version>4.1.1</kafka.version>
         <log4j2.version>2.25.3</log4j2.version>
-        <maven.compiler.release>11</maven.compiler.release>
+        <maven.compiler.release>21</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <slf4j.version>2.0.17</slf4j.version>
         <maven.install.skip>true</maven.install.skip>
