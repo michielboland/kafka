@@ -7,7 +7,12 @@ import org.apache.kafka.streams.processor.api.Record;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Base64;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UncheckedIOException;
+import java.util.List;
+import java.util.Objects;
 import java.util.Properties;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -32,10 +37,18 @@ public class Writer {
 
     private static class DummyProcessor implements Processor<String, String, String, String> {
 
+        private final List<String> randomwords;
         private final Random random = new Random();
-        private final Base64.Encoder encoder = Base64.getEncoder();
         private ProcessorContext<String, String> context;
 
+        {
+            try (var reader = new BufferedReader(new InputStreamReader(Objects.requireNonNull(Thread.currentThread().getContextClassLoader().getResourceAsStream("randomwords"))))) {
+                randomwords = reader.lines().toList();
+            } catch (IOException e) {
+                throw new UncheckedIOException(e);
+            }
+
+        }
         @Override
         public void init(ProcessorContext<String, String> context) {
             this.context = context;
@@ -52,13 +65,11 @@ public class Writer {
         }
 
         private String randomWord() {
-            byte[] bytes = new byte[3];
-            random.nextBytes(bytes);
-            return encoder.encodeToString(bytes);
+            return randomwords.get(random.nextInt(randomwords.size()));
         }
 
         private String randomString() {
-            return IntStream.range(0, random.nextInt(16)).mapToObj(i -> randomWord()).collect(Collectors.joining(" "));
+            return IntStream.range(0, random.nextInt(16) + 1).mapToObj(i -> randomWord()).collect(Collectors.joining(" "));
         }
     }
 }
