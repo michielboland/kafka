@@ -33,6 +33,7 @@ class Config {
             props.put(StreamsConfig.NUM_STREAM_THREADS_CONFIG, 2);
             props.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.StringSerde.class);
             props.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.StringSerde.class);
+            props.put(StreamsConfig.STATE_DIR_CONFIG, "target/kafka-streams");
             return props;
         }
     }
