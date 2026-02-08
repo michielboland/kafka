@@ -49,12 +49,7 @@ public class Writer {
             if (value == null) {
                 return;
             }
-            long valueCount;
-            try {
-                valueCount = Long.parseLong(value);
-            } catch (NumberFormatException e) {
-                return;
-            }
+            long valueCount = Long.parseLong(value);
             if (valueCount <= 0) {
                 return;
             }
