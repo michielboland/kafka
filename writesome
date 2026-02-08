@@ -1,2 +1,0 @@
-#!/bin/sh
-docker compose exec broker /opt/kafka/bin/kafka-console-producer.sh --bootstrap-server broker:9092 --topic dummy --property 'parse.key=true' --property 'key.separator=:'
