@@ -7,7 +7,6 @@ import org.apache.kafka.common.errors.TopicExistsException;
 import java.util.Arrays;
 import java.util.Properties;
 import java.util.concurrent.ExecutionException;
-import java.util.stream.Collectors;
 
 public class CreateTopics {
 
@@ -18,11 +17,20 @@ public class CreateTopics {
             "streams-pipe-output",
             "streams-wordcount-output"
     };
+    private static final int NUM_PARTITIONS = 2;
+    private static final short REPLICATION_FACTOR = 1;
 
     public static void main(String[] args) throws Exception {
-        Properties props = Config.builder().defaultBootstrapServer().applicationId("create-topic").build();
+        Properties props = Config.builder()
+                .defaultBootstrapServer()
+                .applicationId("create-topic")
+                .build();
         try (var adminClient = Admin.create(props)) {
-            adminClient.createTopics(Arrays.stream(TOPICS).map(n -> new NewTopic(n, 2, (short) 1)).collect(Collectors.toList())).all().get();
+            adminClient.createTopics(Arrays.stream(TOPICS)
+                            .map(topicName -> new NewTopic(topicName, NUM_PARTITIONS, REPLICATION_FACTOR))
+                            .toList())
+                    .all()
+                    .get();
         } catch (ExecutionException e) {
             if (!(e.getCause() instanceof TopicExistsException)) {
                 throw new RuntimeException(e);
