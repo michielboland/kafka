@@ -25,17 +25,17 @@ public class Writer {
 
     public static void main(String[] args) {
         Properties props = Config.builder()
-                .applicationId("dummy-writer")
+                .applicationId("writer")
                 .defaultBootstrapServer()
                 .build();
         var builder = new StreamsBuilder();
-        builder.<String, String>stream("dummy")
-                .process(DummyProcessor::new)
+        builder.<String, String>stream("writer-input")
+                .process(WriteProcessor::new)
                 .to("streams-plaintext-input");
         new Runner().runStream(builder, props);
     }
 
-    private static class DummyProcessor implements Processor<String, String, String, String> {
+    private static class WriteProcessor implements Processor<String, String, String, String> {
 
         private final List<String> randomwords;
         private final Random random = new Random();

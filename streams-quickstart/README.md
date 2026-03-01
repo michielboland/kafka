@@ -20,15 +20,15 @@ Before running, start a kafka broker on localhost:9092
                              WordCount
                                   ^
                                   |
-+-------+              +-------------------------+            +---------------------+
-| dummy | -> Writer -> | streams-plaintext-input | -> Pipe -> | streams-pipe-output |
-+-------+              +-------------------------+            +---------------------+
-                           |                  |
-                           v                  v
-                         States           LineSplit
-                                              |
-                                              v
-                                    +--------------------------+          
-                                    | streams-linesplit-output |        
-                                    +--------------------------+
++--------------+              +-------------------------+            +---------------------+
+| writer-input | -> Writer -> | streams-plaintext-input | -> Pipe -> | streams-pipe-output |
++--------------+              +-------------------------+            +---------------------+
+                                  |                  |
+                                  v                  v
+                                States           LineSplit
+                                                     |
+                                                     v
+                                           +--------------------------+
+                                           | streams-linesplit-output |
+                                           +--------------------------+
 ```

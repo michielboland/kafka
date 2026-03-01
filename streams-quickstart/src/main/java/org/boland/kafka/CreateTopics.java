@@ -11,7 +11,7 @@ import java.util.concurrent.ExecutionException;
 public class CreateTopics {
 
     private static final String[] TOPICS = {
-            "dummy",
+            "writer-input",
             "streams-plaintext-input",
             "streams-linesplit-output",
             "streams-pipe-output",
