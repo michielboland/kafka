@@ -47,8 +47,8 @@ public class Writer {
             } catch (IOException e) {
                 throw new UncheckedIOException(e);
             }
-
         }
+
         @Override
         public void init(ProcessorContext<String, String> context) {
             this.context = context;
