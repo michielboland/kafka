@@ -1,6 +1,7 @@
 package org.boland.kafka;
 
 import org.apache.kafka.streams.StreamsBuilder;
+import org.apache.kafka.streams.TopologyConfig;
 
 /**
  * In this example, we implement a simple Pipe program using the high-level Streams DSL
@@ -15,7 +16,7 @@ public class Pipe {
                 .defaultBootstrapServer()
                 .buildStreamsConfig();
 
-        final StreamsBuilder builder = new StreamsBuilder();
+        var builder = new StreamsBuilder(new TopologyConfig(config));
 
         builder.stream("streams-plaintext-input").to("streams-pipe-output");
 

@@ -2,6 +2,7 @@ package org.boland.kafka;
 
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.StreamsBuilder;
+import org.apache.kafka.streams.TopologyConfig;
 import org.apache.kafka.streams.kstream.Materialized;
 import org.apache.kafka.streams.kstream.Produced;
 
@@ -22,7 +23,7 @@ public class WordCount {
                 .defaultBootstrapServer()
                 .buildStreamsConfig();
 
-        final StreamsBuilder builder = new StreamsBuilder();
+        var builder = new StreamsBuilder(new TopologyConfig(config));
 
         builder.<String, String>stream("streams-plaintext-input")
                 .flatMapValues(value -> Arrays.asList(value.toLowerCase(Locale.getDefault()).split("\\W+")))

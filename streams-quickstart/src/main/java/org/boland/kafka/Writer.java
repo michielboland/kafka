@@ -1,6 +1,7 @@
 package org.boland.kafka;
 
 import org.apache.kafka.streams.StreamsBuilder;
+import org.apache.kafka.streams.TopologyConfig;
 import org.apache.kafka.streams.processor.api.Processor;
 import org.apache.kafka.streams.processor.api.ProcessorContext;
 import org.apache.kafka.streams.processor.api.Record;
@@ -27,7 +28,7 @@ public class Writer {
                 .applicationId("writer")
                 .defaultBootstrapServer()
                 .buildStreamsConfig();
-        var builder = new StreamsBuilder();
+        var builder = new StreamsBuilder(new TopologyConfig(config));
         builder.<String, String>stream("writer-input")
                 .process(WriteProcessor::new)
                 .to("streams-plaintext-input");

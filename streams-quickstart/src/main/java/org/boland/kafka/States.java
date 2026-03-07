@@ -2,6 +2,7 @@ package org.boland.kafka;
 
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.StreamsBuilder;
+import org.apache.kafka.streams.TopologyConfig;
 import org.apache.kafka.streams.processor.api.Processor;
 import org.apache.kafka.streams.processor.api.ProcessorContext;
 import org.apache.kafka.streams.processor.api.ProcessorSupplier;
@@ -22,7 +23,7 @@ public class States {
                 .applicationId("states")
                 .defaultBootstrapServer()
                 .buildStreamsConfig();
-        final StreamsBuilder builder = new StreamsBuilder();
+        var builder = new StreamsBuilder(new TopologyConfig(config));
         builder.<String, String>stream("streams-plaintext-input")
                 .process(new StateProcessorSupplier());
         new Runner().runStream(builder, config);
