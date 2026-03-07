@@ -2,11 +2,11 @@ package org.boland.kafka;
 
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.StreamsBuilder;
+import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.Topology;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Properties;
 import java.util.concurrent.CountDownLatch;
 
 import static org.apache.kafka.streams.errors.StreamsUncaughtExceptionHandler.StreamThreadExceptionResponse.SHUTDOWN_APPLICATION;
@@ -16,10 +16,10 @@ class Runner {
     private static final Logger LOG = LoggerFactory.getLogger(Runner.class);
     private boolean close = true;
 
-    void runStream(StreamsBuilder builder, Properties props) {
+    void runStream(StreamsBuilder builder, StreamsConfig config) {
         final Topology topology = builder.build();
         int status;
-        try (KafkaStreams streams = new KafkaStreams(topology, props)) {
+        try (KafkaStreams streams = new KafkaStreams(topology, config)) {
             status = runStreams(streams);
         }
         close = false;

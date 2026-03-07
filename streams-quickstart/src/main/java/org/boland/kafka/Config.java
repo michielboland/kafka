@@ -36,5 +36,9 @@ class Config {
             props.put(StreamsConfig.STATE_DIR_CONFIG, "target/kafka-streams");
             return props;
         }
+
+        StreamsConfig buildStreamsConfig() {
+            return new StreamsConfig(build());
+        }
     }
 }

@@ -7,7 +7,6 @@ import org.apache.kafka.streams.kstream.Produced;
 
 import java.util.Arrays;
 import java.util.Locale;
-import java.util.Properties;
 
 /**
  * In this example, we implement a simple WordCount program using the high-level Streams DSL
@@ -18,10 +17,10 @@ import java.util.Properties;
 public class WordCount {
 
     public static void main(String[] args) {
-        Properties props = Config.builder()
+        var config = Config.builder()
                 .applicationId("streams-wordcount")
                 .defaultBootstrapServer()
-                .build();
+                .buildStreamsConfig();
 
         final StreamsBuilder builder = new StreamsBuilder();
 
@@ -32,6 +31,6 @@ public class WordCount {
                 .toStream()
                 .to("streams-wordcount-output", Produced.with(Serdes.String(), Serdes.Long()));
 
-        new Runner().runStream(builder, props);
+        new Runner().runStream(builder, config);
     }
 }

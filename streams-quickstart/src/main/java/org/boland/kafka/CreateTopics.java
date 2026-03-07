@@ -5,7 +5,6 @@ import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.common.errors.TopicExistsException;
 
 import java.util.Arrays;
-import java.util.Properties;
 import java.util.concurrent.ExecutionException;
 
 public class CreateTopics {
@@ -21,7 +20,7 @@ public class CreateTopics {
     private static final short REPLICATION_FACTOR = 1;
 
     public static void main(String[] args) throws Exception {
-        Properties props = Config.builder()
+        var props = Config.builder()
                 .defaultBootstrapServer()
                 .applicationId("create-topic")
                 .build();

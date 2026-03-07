@@ -2,8 +2,6 @@ package org.boland.kafka;
 
 import org.apache.kafka.streams.StreamsBuilder;
 
-import java.util.Properties;
-
 /**
  * In this example, we implement a simple Pipe program using the high-level Streams DSL
  * that reads from a source topic "streams-plaintext-input", where the values of messages represent lines of text,
@@ -12,15 +10,15 @@ import java.util.Properties;
 public class Pipe {
 
     public static void main(String[] args) {
-        Properties props = Config.builder()
+        var config = Config.builder()
                 .applicationId("streams-pipe")
                 .defaultBootstrapServer()
-                .build();
+                .buildStreamsConfig();
 
         final StreamsBuilder builder = new StreamsBuilder();
 
         builder.stream("streams-plaintext-input").to("streams-pipe-output");
 
-        new Runner().runStream(builder, props);
+        new Runner().runStream(builder, config);
     }
 }

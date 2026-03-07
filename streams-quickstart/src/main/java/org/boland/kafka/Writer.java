@@ -13,7 +13,6 @@ import java.io.InputStreamReader;
 import java.io.UncheckedIOException;
 import java.util.List;
 import java.util.Objects;
-import java.util.Properties;
 import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -24,15 +23,15 @@ public class Writer {
     private static final Logger LOG = LoggerFactory.getLogger(Writer.class);
 
     public static void main(String[] args) {
-        Properties props = Config.builder()
+        var config = Config.builder()
                 .applicationId("writer")
                 .defaultBootstrapServer()
-                .build();
+                .buildStreamsConfig();
         var builder = new StreamsBuilder();
         builder.<String, String>stream("writer-input")
                 .process(WriteProcessor::new)
                 .to("streams-plaintext-input");
-        new Runner().runStream(builder, props);
+        new Runner().runStream(builder, config);
     }
 
     private static class WriteProcessor implements Processor<String, String, String, String> {

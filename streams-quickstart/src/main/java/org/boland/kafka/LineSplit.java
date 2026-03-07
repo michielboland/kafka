@@ -3,7 +3,6 @@ package org.boland.kafka;
 import org.apache.kafka.streams.StreamsBuilder;
 
 import java.util.Arrays;
-import java.util.Properties;
 
 /**
  * In this example, we implement a simple LineSplit program using the high-level Streams DSL
@@ -14,10 +13,10 @@ import java.util.Properties;
 public class LineSplit {
 
     public static void main(String[] args) {
-        Properties props = Config.builder()
+        var config = Config.builder()
                 .applicationId("streams-linesplit")
                 .defaultBootstrapServer()
-                .build();
+                .buildStreamsConfig();
 
         final StreamsBuilder builder = new StreamsBuilder();
 
@@ -25,6 +24,6 @@ public class LineSplit {
                 .flatMapValues(value -> Arrays.asList(value.split("\\W+")))
                 .to("streams-linesplit-output");
 
-        new Runner().runStream(builder, props);
+        new Runner().runStream(builder, config);
     }
 }

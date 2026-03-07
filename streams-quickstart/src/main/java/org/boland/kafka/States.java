@@ -13,20 +13,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Collections;
-import java.util.Properties;
 import java.util.Set;
 
 public class States {
 
     public static void main(String[] args) {
-        Properties props = Config.builder()
+        var config = Config.builder()
                 .applicationId("states")
                 .defaultBootstrapServer()
-                .build();
+                .buildStreamsConfig();
         final StreamsBuilder builder = new StreamsBuilder();
         builder.<String, String>stream("streams-plaintext-input")
                 .process(new StateProcessorSupplier());
-        new Runner().runStream(builder, props);
+        new Runner().runStream(builder, config);
     }
 
     private static class StateProcessorSupplier implements ProcessorSupplier<String, String, String, String> {
