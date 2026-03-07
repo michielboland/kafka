@@ -8,6 +8,8 @@ import java.util.Properties;
 
 class Config {
 
+    static final int REPLICATION_FACTOR = 1;
+
     static Builder builder() {
         return new Builder();
     }
@@ -35,6 +37,7 @@ class Config {
             props.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.StringSerde.class);
             props.put(StreamsConfig.STATE_DIR_CONFIG, "target/kafka-streams");
             props.put(StreamsConfig.ENSURE_EXPLICIT_INTERNAL_RESOURCE_NAMING_CONFIG, true);
+            props.put(StreamsConfig.REPLICATION_FACTOR_CONFIG, REPLICATION_FACTOR);
             return props;
         }
 

@@ -17,7 +17,6 @@ public class CreateTopics {
             "streams-wordcount-output"
     };
     private static final int NUM_PARTITIONS = 2;
-    private static final short REPLICATION_FACTOR = 1;
 
     public static void main(String[] args) throws Exception {
         var props = Config.builder()
@@ -26,7 +25,7 @@ public class CreateTopics {
                 .build();
         try (var adminClient = Admin.create(props)) {
             adminClient.createTopics(Arrays.stream(TOPICS)
-                            .map(topicName -> new NewTopic(topicName, NUM_PARTITIONS, REPLICATION_FACTOR))
+                            .map(topicName -> new NewTopic(topicName, NUM_PARTITIONS, (short) Config.REPLICATION_FACTOR))
                             .toList())
                     .all()
                     .get();
