@@ -17,7 +17,10 @@ class Runner {
     private boolean close = true;
 
     void runStream(StreamsBuilder builder, StreamsConfig config) {
-        final Topology topology = builder.build();
+        runStream(builder.build(), config);
+    }
+
+    void runStream(Topology topology, StreamsConfig config) {
         LOG.atInfo().setMessage("{}").addArgument(topology::describe).log();
         int status;
         try (KafkaStreams streams = new KafkaStreams(topology, config)) {
