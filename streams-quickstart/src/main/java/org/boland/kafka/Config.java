@@ -1,5 +1,7 @@
 package org.boland.kafka;
 
+import org.apache.kafka.clients.CommonClientConfigs;
+import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.StreamsConfig;
 
@@ -28,10 +30,15 @@ class Config {
             return this;
         }
 
-        Properties build() {
-            Properties props = new Properties();
+        Properties buildClientProperties() {
+            var props = new Properties();
+            props.put(CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG, bootstrapServer);
+            return props;
+        }
+
+        Properties buildStreamsProperties() {
+            var props = buildClientProperties();
             props.put(StreamsConfig.APPLICATION_ID_CONFIG, Objects.requireNonNull(applicationId));
-            props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, Objects.requireNonNull(bootstrapServer));
             props.put(StreamsConfig.NUM_STREAM_THREADS_CONFIG, 2);
             props.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.StringSerde.class);
             props.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.StringSerde.class);
@@ -41,8 +48,17 @@ class Config {
             return props;
         }
 
+        Properties buildConsumerProperties() {
+            var props = buildClientProperties();
+            props.put(ConsumerConfig.GROUP_ID_CONFIG, Objects.requireNonNull(applicationId));
+            props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, false);
+            props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
+            props.put(ConsumerConfig.ALLOW_AUTO_CREATE_TOPICS_CONFIG, false);
+            return props;
+        }
+
         StreamsConfig buildStreamsConfig() {
-            return new StreamsConfig(build());
+            return new StreamsConfig(buildStreamsProperties());
         }
     }
 }

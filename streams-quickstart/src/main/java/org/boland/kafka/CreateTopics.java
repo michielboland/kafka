@@ -21,8 +21,7 @@ public class CreateTopics {
     public static void main(String[] args) throws Exception {
         var props = Config.builder()
                 .defaultBootstrapServer()
-                .applicationId("create-topic")
-                .build();
+                .buildClientProperties();
         try (var adminClient = Admin.create(props)) {
             adminClient.createTopics(Arrays.stream(TOPICS)
                             .map(topicName -> new NewTopic(topicName, NUM_PARTITIONS, (short) Config.REPLICATION_FACTOR))
