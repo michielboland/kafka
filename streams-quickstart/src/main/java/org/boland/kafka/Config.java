@@ -2,6 +2,7 @@ package org.boland.kafka;
 
 import org.apache.kafka.clients.CommonClientConfigs;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
+import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.Serdes;
 import org.apache.kafka.streams.StreamsConfig;
 
@@ -54,6 +55,13 @@ class Config {
             props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, false);
             props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
             props.put(ConsumerConfig.ALLOW_AUTO_CREATE_TOPICS_CONFIG, false);
+            props.put(ConsumerConfig.DEFAULT_ISOLATION_LEVEL, "read_committed");
+            return props;
+        }
+
+        Properties buildProducerProperties() {
+            var props = buildClientProperties();
+            props.put(ProducerConfig.TRANSACTIONAL_ID_CONFIG, Objects.requireNonNull(applicationId));
             return props;
         }
 
